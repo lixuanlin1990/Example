@@ -3,6 +3,7 @@ package com.lixlop.example.kotlin
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.lixlop.example.R
 import com.lixlop.example.retrofit2.RetrofitServiceGenerator
@@ -19,6 +20,7 @@ import retrofit2.Response
  */
 class CoroutineActivity : AppCompatActivity() {
 
+    @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coroutine)
@@ -33,9 +35,28 @@ class CoroutineActivity : AppCompatActivity() {
         //方法三，通过CoroutineContext创建一个CoroutineScope对象
         val job = Job()
         val coroutineScope = CoroutineScope(Dispatchers.Main + job)
+        Log.e("lixiaoyan", "$coroutineScope")
         coroutineScope.launch {
+            Log.e("lixiaoyan", "$this")
+            Log.e("lixiaoyan", "${Thread.currentThread().name}")
             val img = getImage()
+            val result1 = async {
+                Log.e("lixiaoyan", "$this")
+                Log.e("lixiaoyan", "${Thread.currentThread().name}")
+                delay(5000)
+                1
+            }
+            val result2 = async {
+                Log.e("lixiaoyan", "${Thread.currentThread().name}")
+                delay(2000)
+                2
+            }
+            Log.e("lixiaoyan", "${result1.await()}")
+            Log.e("lixiaoyan", "${result2.await()}")
             image.setImageBitmap(img)
+        }
+        layout.setOnClickListener {
+            Log.e("lixiaoyan", "点击")
         }
     }
 
