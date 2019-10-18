@@ -1,7 +1,3 @@
 package com.example.lixlop.javalib
 
-class TestClass {
-    fun main(){
-
-    }
-}
+class TestClass(val a:Int)

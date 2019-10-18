@@ -1,16 +1,15 @@
 package com.example.lixlop.javalib;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MyClass {
     public static void main(String[] args) {
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 18; i++) {
-            list.add("" + i);
+//        for (long i = 0;i<1000;i+=500){
+//            System.out.println(i);
+//        }
+
+        for (String s :new ArrayList<String>()){
+            System.out.println(s);
         }
-        List<String> list1 = list.subList(0,5);
-        System.out.println(list1);
-        System.out.println(list);
     }
 }
