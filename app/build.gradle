@@ -8,7 +8,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.lixlop.example"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -59,4 +59,7 @@ dependencies {
         transitive = true
     }
     //vlayout end
+    //lottie start
+    implementation "com.airbnb.android:lottie:3.0.7"
+    //lottie end
 }
