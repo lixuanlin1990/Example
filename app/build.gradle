@@ -62,4 +62,17 @@ dependencies {
     //lottie start
     implementation "com.airbnb.android:lottie:3.0.7"
     //lottie end
+
+    // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:2.1.0"
+    // alternatively - just ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
+    // alternatively - just LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.1.0"
+    // alternatively - Lifecycles only (no ViewModel or LiveData). Some UI
+    // AndroidX libraries use this lightweight import for Lifecycle
+//    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.1.0"
+    // kapt "androidx.lifecycle:lifecycle-compiler:$LIFECYCLE_VERSION"
+    // alternately - if using Java8, use the following instead of lifecycle-compiler
+//    implementation "androidx.lifecycle:lifecycle-common-java8:2.1.0"
 }

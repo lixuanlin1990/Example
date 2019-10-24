@@ -5,6 +5,9 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.lixlop.example.R
 import com.lixlop.example.retrofit2.RetrofitServiceGenerator
 import kotlinx.android.synthetic.main.activity_coroutine.*
@@ -18,12 +21,25 @@ import retrofit2.Response
  * 2、协程跑在线程中
  * 3、Android系统上，如果在主线程进行网络请求，会抛出NetworkOnMainThreadException,对于在主线程上的协程也不例外，这种场景使用协程还是要切换线程。
  */
-class CoroutineActivity : AppCompatActivity() {
-
+class CoroutineActivity : AppCompatActivity() ,CoroutineScope by MainScope(){
+    val liveData = MutableLiveData<String>()
     @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coroutine)
+        launch {
+            repeat(Int.MAX_VALUE) {
+                liveData.value = "$it"
+                delay(7000)
+            }
+        }
+        layout.setOnClickListener {
+            GlobalScope.cancel()
+            Log.e("lixiaoyan", "点击")
+        }
+    }
+
+    private fun coroutine(){
         //方法一，runBlocking顶层函数
         runBlocking {
 
@@ -54,9 +70,6 @@ class CoroutineActivity : AppCompatActivity() {
             Log.e("lixiaoyan", "${result1.await()}")
             Log.e("lixiaoyan", "${result2.await()}")
             image.setImageBitmap(img)
-        }
-        layout.setOnClickListener {
-            Log.e("lixiaoyan", "点击")
         }
     }
 
