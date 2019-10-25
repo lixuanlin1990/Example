@@ -5,9 +5,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.lixlop.example.R
 import com.lixlop.example.retrofit2.RetrofitServiceGenerator
 import kotlinx.android.synthetic.main.activity_coroutine.*
@@ -21,25 +19,50 @@ import retrofit2.Response
  * 2、协程跑在线程中
  * 3、Android系统上，如果在主线程进行网络请求，会抛出NetworkOnMainThreadException,对于在主线程上的协程也不例外，这种场景使用协程还是要切换线程。
  */
-class CoroutineActivity : AppCompatActivity() ,CoroutineScope by MainScope(){
+class CoroutineActivity : AppCompatActivity() {
     val liveData = MutableLiveData<String>()
+    val activity: CoroutineActivity by lazy {
+        this
+    }
+
     @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coroutine)
-        launch {
-            repeat(Int.MAX_VALUE) {
-                liveData.value = "$it"
-                delay(7000)
+        val job = Job()
+        val mScope = CoroutineScope(Dispatchers.Main + job)
+        val exceptionHandler = CoroutineExceptionHandler { _, _ ->
+
+        }
+        mScope.launch(exceptionHandler) {
+            supervisorScope {
+                async {
+                    Log.e("lixiaoyan", "launch1")
+                    throw Exception()
+                }
+                async {
+                    delay(3000)
+                    Log.e("lixiaoyan", "launch2")
+                }
             }
+            Log.e("lixiaoyan", "launch")
         }
         layout.setOnClickListener {
-            GlobalScope.cancel()
-            Log.e("lixiaoyan", "点击")
+            Log.e("lixiaoyan", "click")
         }
     }
 
-    private fun coroutine(){
+    private suspend fun test(): String = withContext(Dispatchers.IO) {
+        coroutineScope {
+            launch {
+
+            }
+        }
+        delay(3000)
+        "123"
+    }
+
+    private fun coroutine() {
         //方法一，runBlocking顶层函数
         runBlocking {
 
@@ -86,6 +109,4 @@ class CoroutineActivity : AppCompatActivity() ,CoroutineScope by MainScope(){
             bitmap
         }
     }
-
-
 }

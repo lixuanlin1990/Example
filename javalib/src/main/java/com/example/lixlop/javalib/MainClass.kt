@@ -13,6 +13,7 @@ class MainClass {
         @JvmStatic
         fun main(args: Array<String>) {
             MainClass("test")
+            User("").toString2()
         }
     }
 }
