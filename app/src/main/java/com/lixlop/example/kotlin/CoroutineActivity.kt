@@ -11,6 +11,7 @@ import com.lixlop.example.retrofit2.RetrofitServiceGenerator
 import kotlinx.android.synthetic.main.activity_coroutine.*
 import kotlinx.coroutines.*
 import okhttp3.ResponseBody
+import okhttp3.internal.wait
 import retrofit2.Response
 
 /**
@@ -37,6 +38,7 @@ class CoroutineActivity : AppCompatActivity() {
         mScope.launch(exceptionHandler) {
             supervisorScope {
                 async {
+                    getImage()
                     Log.e("lixiaoyan", "launch1")
                     throw Exception()
                 }
@@ -98,13 +100,13 @@ class CoroutineActivity : AppCompatActivity() {
 
     private suspend fun getImage(): Bitmap? {
         return withContext(Dispatchers.IO) {
-            val response: Response<ResponseBody> =
+            val response: Deferred<ResponseBody> =
                 RetrofitServiceGenerator.createService(ImageServer::class.java)
                     .kwFetchImage("https://upload-images.jianshu.io/upload_images/11207702-2b20cfd4c8375a26.jpg?imageMogr2/auto-orient/strip|imageView2/2/w/480/format/webp")
-                    .execute()
             var bitmap: Bitmap? = null
-            if (response.body()?.byteStream() != null) {
-                bitmap = BitmapFactory.decodeStream(response.body()!!.byteStream())
+            val st = response.await()
+            if (st.byteStream() != null) {
+                bitmap = BitmapFactory.decodeStream(st!!.byteStream())
             }
             bitmap
         }
