@@ -2,6 +2,7 @@ package com.lixlop.example.kotlin
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -11,8 +12,6 @@ import com.lixlop.example.retrofit2.RetrofitServiceGenerator
 import kotlinx.android.synthetic.main.activity_coroutine.*
 import kotlinx.coroutines.*
 import okhttp3.ResponseBody
-import okhttp3.internal.wait
-import retrofit2.Response
 
 /**
  * 协程：线程操作API，设计的初衷是为了解决并发问题
@@ -36,24 +35,38 @@ class CoroutineActivity : AppCompatActivity() {
 
         }
         mScope.launch(exceptionHandler) {
+            test2()
+            val list = arrayListOf<Int>()
             supervisorScope {
-                async {
-                    getImage()
-                    Log.e("lixiaoyan", "launch1")
-                    throw Exception()
-                }
-                async {
-                    delay(3000)
-                    Log.e("lixiaoyan", "launch2")
+                for (i in 0..100) {
+                    async {
+                        delay(3000)
+                        list.add(i)
+                    }
                 }
             }
-            Log.e("lixiaoyan", "launch")
+            for (temp in list) {
+                Log.e("lixiaoyan", "$temp")
+            }
         }
         layout.setOnClickListener {
             Log.e("lixiaoyan", "click")
         }
     }
 
+    private suspend fun test2(){
+//        withContext(Dispatchers.IO){
+            Typeface.createFromAsset(baseContext.assets, "PingFang.ttc")
+            Typeface.createFromAsset(baseContext.assets, "PingFang.ttc")
+            Typeface.createFromAsset(baseContext.assets, "PingFang.ttc")
+            Typeface.createFromAsset(baseContext.assets, "PingFang.ttc")
+            Typeface.createFromAsset(baseContext.assets, "PingFang.ttc")
+            Typeface.createFromAsset(baseContext.assets, "PingFang.ttc")
+            Typeface.createFromAsset(baseContext.assets, "PingFang.ttc")
+            Typeface.createFromAsset(baseContext.assets, "PingFang.ttc")
+            Typeface.createFromAsset(baseContext.assets, "PingFang.ttc")
+//        }
+    }
     private suspend fun test(): String = withContext(Dispatchers.IO) {
         coroutineScope {
             launch {
@@ -77,25 +90,6 @@ class CoroutineActivity : AppCompatActivity() {
         val job = Job()
         val coroutineScope = CoroutineScope(Dispatchers.Main + job)
         Log.e("lixiaoyan", "$coroutineScope")
-        coroutineScope.launch {
-            Log.e("lixiaoyan", "$this")
-            Log.e("lixiaoyan", "${Thread.currentThread().name}")
-            val img = getImage()
-            val result1 = async {
-                Log.e("lixiaoyan", "$this")
-                Log.e("lixiaoyan", "${Thread.currentThread().name}")
-                delay(5000)
-                1
-            }
-            val result2 = async {
-                Log.e("lixiaoyan", "${Thread.currentThread().name}")
-                delay(2000)
-                2
-            }
-            Log.e("lixiaoyan", "${result1.await()}")
-            Log.e("lixiaoyan", "${result2.await()}")
-            image.setImageBitmap(img)
-        }
     }
 
     private suspend fun getImage(): Bitmap? {

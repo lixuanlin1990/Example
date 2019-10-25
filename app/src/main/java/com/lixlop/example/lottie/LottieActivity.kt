@@ -1,28 +1,59 @@
 package com.lixlop.example.lottie
 
+import android.annotation.SuppressLint
+import android.graphics.BitmapFactory
+import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.airbnb.lottie.FontAssetDelegate
+import com.airbnb.lottie.TextDelegate
 import com.lixlop.example.R
 import kotlinx.android.synthetic.main.activity_lottie.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 
 class LottieActivity : AppCompatActivity() {
+    private suspend fun fetchFont() =
+        withContext(Dispatchers.IO) { Typeface.createFromAsset(baseContext.assets, "PingFang.ttc") }
 
+    @SuppressLint("VisibleForTests")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lottie)
-        ////assets目录下的子目录，存放动画所需的图片
-        image.imageAssetsFolder = "images/"
-        //在assets目录下的动画json文件名
-        image.setAnimation("data.json")
-//        image.setAnimationFromJson(
-//            "{\"v\":\"5.5.6\",\"fr\":25,\"ip\":0,\"op\":200,\"w\":500,\"h\":500,\"nm\":\"切图\",\"ddd\":1,\"assets\":[{\"id\":\"image_0\",\"w\":466,\"h\":274,\"u\":\"images/\",\"p\":\"img_0.png\",\"e\":0}],\"layers\":[{\"ddd\":1,\"ind\":1,\"ty\":2,\"nm\":\"home_tag_sucxxhdpi.png\",\"cl\":\"png\",\"refId\":\"image_0\",\"sr\":1,\"ks\":{\"o\":{\"a\":1,\"k\":[{\"i\":{\"x\":[0.833],\"y\":[0.833]},\"o\":{\"x\":[0.167],\"y\":[0.167]},\"t\":167,\"s\":[100]},{\"t\":198,\"s\":[0]}],\"ix\":11},\"rx\":{\"a\":0,\"k\":0,\"ix\":8},\"ry\":{\"a\":1,\"k\":[{\"i\":{\"x\":[0.833],\"y\":[0.833]},\"o\":{\"x\":[0.167],\"y\":[0.167]},\"t\":0,\"s\":[0]},{\"t\":25,\"s\":[360]}],\"ix\":9},\"rz\":{\"a\":0,\"k\":0,\"ix\":10},\"or\":{\"a\":0,\"k\":[0,0,0],\"ix\":7},\"p\":{\"a\":1,\"k\":[{\"i\":{\"x\":0.667,\"y\":1},\"o\":{\"x\":0.333,\"y\":0},\"t\":0,\"s\":[253,366,0],\"to\":[0,-7.032,0],\"ti\":[0,19.099,0]},{\"i\":{\"x\":0.667,\"y\":1},\"o\":{\"x\":0.333,\"y\":0},\"t\":16,\"s\":[253,266,0],\"to\":[0,-17.112,0],\"ti\":[0,0,0]},{\"i\":{\"x\":0.667,\"y\":1},\"o\":{\"x\":0.333,\"y\":0},\"t\":25,\"s\":[253,266,0],\"to\":[0,0,0],\"ti\":[0,0,0]},{\"i\":{\"x\":0.667,\"y\":1},\"o\":{\"x\":0.333,\"y\":0},\"t\":50,\"s\":[253,366,0],\"to\":[0,0,0],\"ti\":[0,0,0]},{\"i\":{\"x\":0.667,\"y\":1},\"o\":{\"x\":0.333,\"y\":0},\"t\":75,\"s\":[253,266,0],\"to\":[0,0,0],\"ti\":[0,14.333,0]},{\"i\":{\"x\":0.667,\"y\":0.82},\"o\":{\"x\":0.333,\"y\":0},\"t\":100,\"s\":[253,366,0],\"to\":[0,-3.537,0],\"ti\":[0,15.374,0]},{\"i\":{\"x\":0.667,\"y\":0.878},\"o\":{\"x\":0.333,\"y\":0.17},\"t\":125,\"s\":[253,266,0],\"to\":[0,-20.425,0],\"ti\":[0,11.802,0]},{\"i\":{\"x\":0.667,\"y\":1},\"o\":{\"x\":0.333,\"y\":0.134},\"t\":150,\"s\":[253,366,0],\"to\":[0,-15.318,0],\"ti\":[0,13.189,0]},{\"t\":198,\"s\":[253,180,0]}],\"ix\":2},\"a\":{\"a\":0,\"k\":[233,137,0],\"ix\":1},\"s\":{\"a\":1,\"k\":[{\"i\":{\"x\":[0.833,0.833,0.833],\"y\":[0.833,0.833,0.833]},\"o\":{\"x\":[0.167,0.167,0.167],\"y\":[0.167,0.167,0.167]},\"t\":0,\"s\":[30,30,30]},{\"t\":25,\"s\":[100,100,100]}],\"ix\":6}},\"ao\":0,\"ef\":[{\"ty\":5,\"nm\":\"块溶解\",\"np\":7,\"mn\":\"ADBE Block Dissolve\",\"ix\":1,\"en\":1,\"ef\":[{\"ty\":0,\"nm\":\"过渡完成\",\"mn\":\"ADBE Block Dissolve-0001\",\"ix\":1,\"v\":{\"a\":1,\"k\":[{\"i\":{\"x\":[0.833],\"y\":[0.833]},\"o\":{\"x\":[0.167],\"y\":[0.167]},\"t\":167,\"s\":[0]},{\"t\":198,\"s\":[100]}],\"ix\":1}},{\"ty\":0,\"nm\":\"块宽度\",\"mn\":\"ADBE Block Dissolve-0002\",\"ix\":2,\"v\":{\"a\":0,\"k\":1,\"ix\":2}},{\"ty\":0,\"nm\":\"块高度\",\"mn\":\"ADBE Block Dissolve-0003\",\"ix\":3,\"v\":{\"a\":0,\"k\":1,\"ix\":3}},{\"ty\":0,\"nm\":\"羽化\",\"mn\":\"ADBE Block Dissolve-0004\",\"ix\":4,\"v\":{\"a\":0,\"k\":0,\"ix\":4}},{\"ty\":7,\"nm\":\"柔化边缘（最佳品质）\",\"mn\":\"ADBE Block Dissolve-0005\",\"ix\":5,\"v\":{\"a\":0,\"k\":1,\"ix\":5}}]}],\"ip\":0,\"op\":200,\"st\":0,\"bm\":0}],\"markers\":[]}",
-//            null
-//        )
-        image.loop(true)
-//        image.setImageAssetDelegate {
-//            BitmapFactory.decodeResource(resources,R.mipmap.ic_launcher)
-//        }
-        //播放动画
-        image.playAnimation()
+        GlobalScope.launch {
+            val typeface = fetchFont()
+            ////assets目录下的子目录，存放动画所需的图片
+            image.imageAssetsFolder = "images/"
+            //在assets目录下的动画json文件名
+            image.setAnimation("data.json")
+            image.setFontAssetDelegate(object : FontAssetDelegate() {
+                override fun fetchFont(fontFamily: String?): Typeface {
+                    return typeface
+                }
+            })
+            val textDelegate = TextDelegate(image)
+            textDelegate.setText("小伙伴", "大头")
+            textDelegate.setText("小伙伴...", "费劲")
+            image.setTextDelegate(textDelegate)
+            image.setImageAssetDelegate {
+                Log.e("lixiaoyan", "${it.dirName} ${it.fileName} ${it.id}")
+                if (it.id == "image_2") {
+                    return@setImageAssetDelegate BitmapFactory.decodeResource(
+                        resources,
+                        R.mipmap.img_1
+                    )
+                }
+                val inputStream = baseContext.assets.open("${it.dirName}${it.fileName}")
+                val bitmap = BitmapFactory.decodeStream(inputStream)
+                inputStream.close()
+                return@setImageAssetDelegate bitmap
+            }
+            //播放动画
+            image.playAnimation()
+        }
     }
 }
