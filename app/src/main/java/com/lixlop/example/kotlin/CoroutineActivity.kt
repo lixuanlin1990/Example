@@ -2,14 +2,15 @@ package com.lixlop.example.kotlin
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.liveData
 import com.lixlop.example.R
 import com.lixlop.example.retrofit2.RetrofitServiceGenerator
-import kotlinx.android.synthetic.main.activity_coroutine.*
 import kotlinx.coroutines.*
 import okhttp3.ResponseBody
 
@@ -20,52 +21,34 @@ import okhttp3.ResponseBody
  * 3、Android系统上，如果在主线程进行网络请求，会抛出NetworkOnMainThreadException,对于在主线程上的协程也不例外，这种场景使用协程还是要切换线程。
  */
 class CoroutineActivity : AppCompatActivity() {
-    val liveData = MutableLiveData<String>()
-    val activity: CoroutineActivity by lazy {
-        this
+
+    val mResult: LiveData<String> = liveData {
+        delay(5000)
+        emit("123")
     }
 
     @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coroutine)
-        val job = Job()
-        val mScope = CoroutineScope(Dispatchers.Main + job)
-        val exceptionHandler = CoroutineExceptionHandler { _, _ ->
-
-        }
-        mScope.launch(exceptionHandler) {
-            test2()
-            val list = arrayListOf<Int>()
-            supervisorScope {
-                for (i in 0..100) {
-                    async {
-                        delay(3000)
-                        list.add(i)
-                    }
-                }
+        lifecycleScope.launchWhenResumed{
+            Log.i("lixiaoyan","launchWhenResumed 1")
+            try {
+                delay(5000)
+            }catch (e:CancellationException){
+                Log.i("lixiaoyan","CancellationException")
+            }finally {
+                Log.i("lixiaoyan","finally")
             }
-            for (temp in list) {
-                Log.e("lixiaoyan", "$temp")
-            }
-        }
-        layout.setOnClickListener {
-            Log.e("lixiaoyan", "click")
+            Log.i("lixiaoyan","launchWhenResumed 2")
         }
     }
 
     private suspend fun test2(){
-//        withContext(Dispatchers.IO){
-            Typeface.createFromAsset(baseContext.assets, "PingFang.ttc")
-            Typeface.createFromAsset(baseContext.assets, "PingFang.ttc")
-            Typeface.createFromAsset(baseContext.assets, "PingFang.ttc")
-            Typeface.createFromAsset(baseContext.assets, "PingFang.ttc")
-            Typeface.createFromAsset(baseContext.assets, "PingFang.ttc")
-            Typeface.createFromAsset(baseContext.assets, "PingFang.ttc")
-            Typeface.createFromAsset(baseContext.assets, "PingFang.ttc")
-            Typeface.createFromAsset(baseContext.assets, "PingFang.ttc")
-            Typeface.createFromAsset(baseContext.assets, "PingFang.ttc")
-//        }
+        coroutineScope {
+            delay(5000)
+            Log.e("lixiaoyan","12345")
+        }
     }
     private suspend fun test(): String = withContext(Dispatchers.IO) {
         coroutineScope {

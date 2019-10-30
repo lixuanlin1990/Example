@@ -8,8 +8,6 @@ public class MyClass {
 //            System.out.println(i);
 //        }
 
-        for (String s :new ArrayList<String>()){
-            System.out.println(s);
-        }
+        Double.valueOf(null);
     }
 }
