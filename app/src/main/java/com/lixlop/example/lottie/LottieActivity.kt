@@ -27,7 +27,7 @@ class LottieActivity : AppCompatActivity() {
         GlobalScope.launch {
             val typeface = fetchFont()
             ////assets目录下的子目录，存放动画所需的图片
-            image.imageAssetsFolder = "images/"
+            image.imageAssetsFolder = "images/launch/"
             //在assets目录下的动画json文件名
             image.setAnimation("data.json")
             image.setFontAssetDelegate(object : FontAssetDelegate() {
@@ -41,13 +41,13 @@ class LottieActivity : AppCompatActivity() {
             image.setTextDelegate(textDelegate)
             image.setImageAssetDelegate {
                 Log.e("lixiaoyan", "${it.dirName} ${it.fileName} ${it.id}")
-                if (it.id == "image_2") {
+                if (it.id == "image_0") {
                     return@setImageAssetDelegate BitmapFactory.decodeResource(
                         resources,
-                        R.mipmap.img_1
+                        R.mipmap.ic_launcher_round
                     )
                 }
-                val inputStream = baseContext.assets.open("${it.dirName}${it.fileName}")
+                val inputStream = baseContext.assets.open("${image.imageAssetsFolder}${it.fileName}")
                 val bitmap = BitmapFactory.decodeStream(inputStream)
                 inputStream.close()
                 return@setImageAssetDelegate bitmap

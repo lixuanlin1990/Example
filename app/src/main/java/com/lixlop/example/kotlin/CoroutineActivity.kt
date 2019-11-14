@@ -33,13 +33,7 @@ class CoroutineActivity : AppCompatActivity() {
         setContentView(R.layout.activity_coroutine)
         lifecycleScope.launchWhenResumed{
             Log.i("lixiaoyan","launchWhenResumed 1")
-            try {
-                delay(5000)
-            }catch (e:CancellationException){
-                Log.i("lixiaoyan","CancellationException")
-            }finally {
-                Log.i("lixiaoyan","finally")
-            }
+            delay(5000)
             Log.i("lixiaoyan","launchWhenResumed 2")
         }
     }
