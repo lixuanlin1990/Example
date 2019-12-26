@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Example_AppTheme">
-        <activity android:name=".rv.RecyclerViewActivity">
+        <activity android:name=".kotlin.CoroutineActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
