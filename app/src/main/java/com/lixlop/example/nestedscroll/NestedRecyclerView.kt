@@ -3,12 +3,41 @@ package com.lixlop.example.nestedscroll
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import androidx.core.view.NestedScrollingParent2
 import androidx.recyclerview.widget.RecyclerView
 
 class NestedRecyclerView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : RecyclerView(context, attrs, defStyleAttr) {
+) : RecyclerView(context, attrs, defStyleAttr),NestedScrollingParent2 {
+    override fun onStartNestedScroll(child: View, target: View, axes: Int, type: Int): Boolean {
+        Log.i("lixiaoyan", "onStartNestedScroll")
+        return false
+    }
+
+    override fun onNestedScrollAccepted(child: View, target: View, axes: Int, type: Int) {
+        Log.i("lixiaoyan", "onNestedScrollAccepted")
+    }
+
+    override fun onStopNestedScroll(target: View, type: Int) {
+        Log.i("lixiaoyan", "onStopNestedScroll")
+    }
+
+    override fun onNestedPreScroll(target: View, dx: Int, dy: Int, consumed: IntArray, type: Int) {
+        Log.i("lixiaoyan", "onNestedPreScroll")
+    }
+
+    override fun onNestedScroll(
+        target: View,
+        dxConsumed: Int,
+        dyConsumed: Int,
+        dxUnconsumed: Int,
+        dyUnconsumed: Int,
+        type: Int
+    ) {
+        Log.i("lixiaoyan", "onNestedScroll")
+    }
 
     override fun hasNestedScrollingParent(type: Int): Boolean {
         val result =super.hasNestedScrollingParent(type)
@@ -37,17 +66,6 @@ class NestedRecyclerView @JvmOverloads constructor(
         val result = super.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow, type)
         Log.i("lixiaoyan", "dispatchNestedPreScroll dx $dx dy $dy consumed ${consumed?.get(0)} ${consumed?.get(1)} $result")
         return result
-    }
-
-    override fun onNestedScroll(
-        target: View?,
-        dxConsumed: Int,
-        dyConsumed: Int,
-        dxUnconsumed: Int,
-        dyUnconsumed: Int
-    ) {
-        Log.i("lixiaoyan", "onNestedScroll")
-        super.onNestedScroll(target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed)
     }
 
     override fun dispatchNestedScroll(
@@ -84,5 +102,9 @@ class NestedRecyclerView @JvmOverloads constructor(
         val result = super.dispatchNestedFling(velocityX, velocityY, consumed)
         Log.i("lixiaoyan", "dispatchNestedFling $result")
         return result
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        return super.dispatchTouchEvent(ev)
     }
 }

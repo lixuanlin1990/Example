@@ -39,6 +39,7 @@ class LottieActivity : AppCompatActivity() {
             textDelegate.setText("小伙伴", "大头")
             textDelegate.setText("小伙伴...", "费劲")
             image.setTextDelegate(textDelegate)
+            image.background = resources.getDrawable(R.mipmap.goods_image_loading)
             image.setImageAssetDelegate {
                 Log.e("lixiaoyan", "${it.dirName} ${it.fileName} ${it.id}")
                 if (it.id == "image_0") {

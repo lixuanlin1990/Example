@@ -13,6 +13,8 @@ import com.lixlop.example.R
 import com.lixlop.example.retrofit2.RetrofitServiceGenerator
 import kotlinx.coroutines.*
 import okhttp3.ResponseBody
+import java.lang.Exception
+import kotlin.coroutines.CoroutineContext
 
 /**
  * 协程：线程操作API，设计的初衷是为了解决并发问题
@@ -32,10 +34,44 @@ class CoroutineActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coroutine)
         lifecycleScope.launchWhenResumed{
-            Log.i("lixiaoyan","launchWhenResumed 1")
-            delay(5000)
-            Log.i("lixiaoyan","launchWhenResumed 2")
+            test3()
         }
+    }
+
+    private suspend fun test3(){
+        Log.i("lixiaoyan","1")
+        try {
+            supervisorScope {
+                Log.i("lixiaoyan","2")
+                val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+                }
+                launch(exceptionHandler) {
+                    Log.i("lixiaoyan","3")
+                    launch {
+                        Log.i("lixiaoyan","4")
+                        delay(100)
+                        throw ArithmeticException("Hey!!")
+                    }
+                    Log.i("lixiaoyan","5")
+                }
+                Log.i("lixiaoyan","6")
+                val job = launch {
+                    Log.i("lixiaoyan","7")
+                    delay(1000)
+                }
+                try {
+                    Log.i("lixiaoyan","8")
+                    job.join()
+                    Log.i("lixiaoyan","9")
+                }catch (e:Exception){
+                    Log.i("lixiaoyan","10.$e")
+                }
+            }
+            Log.i("lixiaoyan","11")
+        }catch (e:Exception){
+            Log.i("lixiaoyan","12.$e")
+        }
+        Log.i("lixiaoyan","13")
     }
 
     private suspend fun test2(){

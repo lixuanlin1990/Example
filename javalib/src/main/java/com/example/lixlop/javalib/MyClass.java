@@ -8,6 +8,10 @@ public class MyClass {
 //            System.out.println(i);
 //        }
 
-        Double.valueOf(null);
+        if ("1" == null) {
+
+        }else {
+            System.out.println("runnable");
+        }
     }
 }
