@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -102,5 +103,11 @@ class NestedScrollActivity : AppCompatActivity() {
                 holder.bind(position)
             }
         }
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        val result = super.onTouchEvent(event)
+        Log.i("lixuanlin", "activity onTouchEvent $result")
+        return result
     }
 }

@@ -15,6 +15,9 @@ import kotlinx.coroutines.*
 import okhttp3.ResponseBody
 import java.lang.Exception
 import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 /**
  * 协程：线程操作API，设计的初衷是为了解决并发问题
@@ -43,9 +46,9 @@ class CoroutineActivity : AppCompatActivity() {
         try {
             supervisorScope {
                 Log.i("lixiaoyan","2")
-                val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
-                }
-                launch(exceptionHandler) {
+//                val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+//                }
+                launch() {
                     Log.i("lixiaoyan","3")
                     launch {
                         Log.i("lixiaoyan","4")
@@ -116,6 +119,11 @@ class CoroutineActivity : AppCompatActivity() {
                 bitmap = BitmapFactory.decodeStream(st!!.byteStream())
             }
             bitmap
+        }
+
+        val result = suspendCoroutine<String> {
+            it.resume("1")
+            it.resumeWithException(Exception())
         }
     }
 }

@@ -105,6 +105,18 @@ class NestedRecyclerView @JvmOverloads constructor(
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        Log.i("lixuanlin", "parent dispatchTouchEvent")
         return super.dispatchTouchEvent(ev)
+    }
+
+    override fun onInterceptTouchEvent(e: MotionEvent?): Boolean {
+        val result = super.onInterceptTouchEvent(e)
+        Log.i("lixuanlin", "parent onInterceptTouchEvent $result ${e?.action}")
+        return result
+    }
+    override fun onTouchEvent(e: MotionEvent?): Boolean {
+        val result = super.onTouchEvent(e)
+        Log.i("lixuanlin", "parent onTouchEvent $result ${e?.action}")
+        return result
     }
 }

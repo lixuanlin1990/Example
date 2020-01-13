@@ -146,20 +146,18 @@ class NestedChildRecyclerView @JvmOverloads constructor(
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        mDetector?.onTouchEvent(ev)
-        if (up) {
-            if (!canScrollVertically(-1)) {
-                parent.requestDisallowInterceptTouchEvent(false)
-            } else {
-                parent.requestDisallowInterceptTouchEvent(true)
-            }
-        } else {
-            if (!canScrollVertically(1)) {
-                parent.requestDisallowInterceptTouchEvent(false)
-            } else {
-                parent.requestDisallowInterceptTouchEvent(true)
-            }
-        }
+        Log.i("lixuanlin", "child dispatchTouchEvent")
         return super.dispatchTouchEvent(ev)
+    }
+
+    override fun onInterceptTouchEvent(e: MotionEvent?): Boolean {
+        val result = super.onInterceptTouchEvent(e)
+        Log.i("lixuanlin", "child onInterceptTouchEvent $result ${e?.action}")
+        return result
+    }
+    override fun onTouchEvent(e: MotionEvent?): Boolean {
+        val result = super.onTouchEvent(e)
+        Log.i("lixuanlin", "child onTouchEvent $result ${e?.action}")
+        return result
     }
 }
